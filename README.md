@@ -2,7 +2,7 @@
 
 Functionally this script is almost the same as [Shaun-Regenbaum/OneUSGAutomaticClock](https://github.com/Shaun-Regenbaum/OneUSGAutomaticClock) except:
 - This version can be run on a headless Raspberry Pi so you don't need to keep your computer on all day
-- This version has [healthchecks.io](https://healthchecks.io) integration for success/failure pinging. 
+- This version has [healthchecks.io](https://healthchecks.io) integration for success/failure pinging and [touchbar status](https://github.com/klamike/btt-healthchecks).
 - This version relies on an external installation of `chromedriver` for Raspberry Pi support
 - Some of the logic is slightly modified for clarity/function.
 

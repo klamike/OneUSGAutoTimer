@@ -129,7 +129,7 @@ def main(out_only=False):
 
 if __name__ == "__main__":
     try:
-        for i in ["GT_NUMHOURS", "GT_USERNAME", "GT_PASSWORD", "CHROMEDRIVER_PATH"]:
+        for i in ["GT_NUMHOURS", "GT_USERNAME", "GT_PASSWORD", "CHROMEDRIVER_PATH", "GT_LOGIN_URL", "GT_IN_PING_URL", "GT_OUT_PING_URL", "GT_FAIL_PING_URL"]:
             if i not in os.environ:
                 raise LookupError(f"ENV variable {i} not defined")
 
@@ -143,4 +143,3 @@ if __name__ == "__main__":
         traceback = format_exc()
         fprint(traceback)
         ping(FAIL_PING_URL, text="Failure", data=traceback)
-

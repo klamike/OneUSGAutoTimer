@@ -11,14 +11,14 @@ ___
 
 ## Installation
 
-1. Install dependencies
-    - Python 3.7+ 
+1. Clone this repo
+    - `git clone https://github.com/klamike/OneUSGAutoTimer.git`
+2. Install dependencies
+    - [Python 3.7+](https://www.python.org/downloads/)
     - chromedriver
       - `sudo apt install chromium-chromedriver` on Raspberry Pi
       - `brew install chromedriver` on MacOS
     - Requests, Selenium using `pip install -r requirements.txt`
-2. Clone this repo
-    - `git clone https://github.com/klamike/OneUSGAutoTimer.git`
 3. Set environment variables
     - Edit `config_example.sh` with your information and rename it to `config.sh`
     - Source `config.sh` using `source config.sh`

@@ -70,6 +70,8 @@ def main(out_only=False):
             break
     else:
         fprint("No Duo Auth for 2 mins, exiting.")
+        ping(FAIL_PING_URL, text="Duo Failure", data="NO DUO AUTH")
+        exit(1)
 
     ## CLOCK IN
     if not out_only:

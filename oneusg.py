@@ -71,6 +71,7 @@ def main(out_only=False):
     else:
         fprint("No Duo Auth for 2 mins, exiting.")
         ping(FAIL_PING_URL, text="Duo Failure", data="NO DUO AUTH")
+        browser.quit()
         exit(1)
 
     ## CLOCK IN
@@ -120,6 +121,8 @@ def main(out_only=False):
     WebDriverWait(browser, 25).until( # verify successful clock out
         lambda browser: "Out" in browser.find_element_by_id("TL_WEB_CLOCK_WK_DESCR50_1").get_attribute('innerHTML')
     )
+
+    browser.quit()
 
     fprint("Clocked out.")
     total_clock_time = (clock_out_time - clock_in_time)/3600

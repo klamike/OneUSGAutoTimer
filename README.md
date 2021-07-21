@@ -33,11 +33,11 @@ ___
 2. Run the script using `python oneusg.py`
    - If you need to stop the script early, you'll be given a choice to clock out or not.
       - If you choose not to, make sure to manually clock out.
-   - If you want to close your SSH connection and keep the script running you can use `nohup` or `screen` or `tmux`
+   - If you want to close your SSH connection and keep the script running you can use `nohup`/`screen`/`tmux`
 
 ### Crontab usage
 
 1. Set an alarm on your phone for 8:58am to make sure you can do the Duo authentication
-2. Edit the crontab using `crontab -e` and add the line below to run the script at 9:00am every weekday morning:
+2. Edit the crontab using `crontab -e` and add the line below to run the script at 9:00am every weekday:
 
 `0 9 * * 1-5 cd /PATH/TO/OneUSGAutoTimer; source config.sh; python3 oneusg.py`

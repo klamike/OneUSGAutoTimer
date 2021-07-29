@@ -1,7 +1,8 @@
 # OneUSGAutoTimer
 
 Functionally this script is almost the same as [Shaun-Regenbaum/OneUSGAutomaticClock](https://github.com/Shaun-Regenbaum/OneUSGAutomaticClock) except:
-- This version has [healthchecks.io](https://healthchecks.io) integration for success/failure pinging. 
+- This version can be run on a headless Raspberry Pi so you don't need to keep your computer on all day
+- This version has [healthchecks.io](https://healthchecks.io) integration for success/failure pinging and [touchbar status](https://github.com/klamike/btt-healthchecks).
 - This version relies on an external installation of `chromedriver` for Raspberry Pi support
 - Some of the logic is slightly modified for clarity/function.
 
@@ -10,14 +11,14 @@ ___
 
 ## Installation
 
-1. Install dependencies
-    - Python 3.7+ 
+1. Clone this repo
+    - `git clone https://github.com/klamike/OneUSGAutoTimer.git`
+2. Install dependencies
+    - [Python 3.7+](https://www.python.org/downloads/)
     - chromedriver
       - `sudo apt install chromium-chromedriver` on Raspberry Pi
       - `brew install chromedriver` on MacOS
     - Requests, Selenium using `pip install -r requirements.txt`
-2. Clone this repo
-    - `git clone https://github.com/klamike/OneUSGAutoTimer.git`
 3. Set environment variables
     - Edit `config_example.sh` with your information and rename it to `config.sh`
     - Source `config.sh` using `source config.sh`

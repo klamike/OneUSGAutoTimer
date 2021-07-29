@@ -17,6 +17,7 @@ FAIL_PING_URL     =       os.environ.get("GT_FAIL_PING_URL")
 CHROMEDRIVER_PATH =       os.environ.get("CHROMEDRIVER_PATH") # use `sudo apt install chromium-chromedriver`
 HOURS_TO_CLOCK    = float(os.environ.get("GT_NUMHOURS")) # set using `export GT_NUMHOURS=8`
 SECONDS_TO_CLOCK  = HOURS_TO_CLOCK * 3600
+EXCEPTIONS        = (NoSuchElementException, TimeoutException)
 
 def fprint(o, **kwargs): print(o, flush=True, **kwargs)
 
@@ -34,14 +35,7 @@ def WDWait(browser, time, by, label, method=None, keys=None):
     elif method == 'send_keys': element.send_keys(keys)
     elif method ==        None: return
 
-def main(out_only=False):
-    chrome_options = Options()
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument("--log-level=3")
-    exceptions = (NoSuchElementException, TimeoutException)
-
-    browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=chrome_options)
-
+def main(browser, out_only=False):
     ## LOGIN
 
     browser.get(LOGIN_URL)
@@ -63,7 +57,7 @@ def main(out_only=False):
             time.sleep(5)
             fprint('.', end='')
             continue
-        except:
+        except EXCEPTIONS:
             fprint("Exiting Duo Loop")
             time.sleep(2)
             browser.refresh() # initial page is blank, need refresh
@@ -85,7 +79,7 @@ def main(out_only=False):
             WDWait(browser, 5, By.ID, "#ICOK", 'send_keys', Keys.RETURN)
             WDWait(browser, 5, By.ID, "PT_WORK_PT_BUTTON_BACK", 'send_keys', Keys.RETURN)
             fprint("You were about to double clock, we prevented that.")
-        except exceptions:
+        except EXCEPTIONS:
             pass
 
         WebDriverWait(browser, 25).until( # verify successful clock in
@@ -108,7 +102,7 @@ def main(out_only=False):
                 try:
                     WDWait(browser, 5, By.ID, "BOR_INSTALL_VW$0_row_0", "send_keys", Keys.RETURN)
                     fprint("Timeout Prevented")
-                except exceptions:
+                except EXCEPTIONS:
                     pass
 
     ## CLOCK OUT
@@ -119,7 +113,7 @@ def main(out_only=False):
     clock_out_time = time.time()
 
     WebDriverWait(browser, 25).until( # verify successful clock out
-        lambda browser: "Out" in browser.find_element_by_id("TL_WEB_CLOCK_WK_DESCR50_1").get_attribute('innerHTML')
+        lambda browser: "Out" in browser.find_element_by_id("TL_WEB_CLOCK_WK_DESCR50_1").get_attribute('innerHTML') # TODO: sometimes leads to StaleElementReferenceException
     )
 
     browser.quit()
@@ -133,14 +127,20 @@ def main(out_only=False):
 if __name__ == "__main__":
     try:
         for i in ["GT_NUMHOURS", "GT_USERNAME", "GT_PASSWORD", "CHROMEDRIVER_PATH", "GT_LOGIN_URL", "GT_IN_PING_URL", "GT_OUT_PING_URL", "GT_FAIL_PING_URL"]:
-            if i not in os.environ:
-                raise LookupError(f"ENV variable {i} not defined")
+            if i not in os.environ: raise LookupError(f"ENV variable {i} not defined")
 
-        main()
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--log-level=3")
+        browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=chrome_options)
 
-    except KeyboardInterrupt:
-        out_str = input("Interrupted. Clock out? [Y/n]")
-        if out_str == '' or out_str in 'yY': main(out_only=True)
+        try:
+            main(browser)
+        except KeyboardInterrupt:
+            out_str = input("Interrupted. Clock out? [Y/n]")
+            if out_str == '' or out_str in 'yY': main(browser, out_only=True)
+        finally:
+            browser.quit()
 
     except Exception as e:
         traceback = format_exc()

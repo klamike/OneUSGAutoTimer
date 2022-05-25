@@ -19,10 +19,10 @@ def ping(url, text='', data=None):
         requests.get(url, timeout=10, data=data)
         fprint(f"{text} ping success")
     except requests.RequestException as e:
-        fprint(f"{text} ping failed: %s" % e)
+        fprint(f"{text} ping failed: {e}")
 
 def WDWait(browser, time, by, label, method=None, keys=None):
-    assert (method == 'send_keys' and keys is not None) or (method != 'send_keys')
+    assert (method != 'send_keys') or (method == 'send_keys' and keys is not None)
     element = WebDriverWait(browser, time).until(EC.element_to_be_clickable((by, label)))
     if   method ==     'click': element.click()
     elif method == 'send_keys': element.send_keys(keys)
@@ -47,8 +47,7 @@ def main(browser, out_only=False):
         try:
             WebDriverWait(browser, 5).until(
                 EC.presence_of_element_located((By.ID, "duo_form")))
-            time.sleep(5)
-            fprint('.', end='')
+            time.sleep(5); fprint('.', end='')
             continue
         except EXCEPTIONS:
             fprint("Exiting Duo Loop")
@@ -58,8 +57,7 @@ def main(browser, out_only=False):
     else:
         fprint("No Duo Auth for 2 mins, exiting.")
         ping(FAIL_PING_URL, text="Duo Failure", data="NO DUO AUTH")
-        browser.quit()
-        exit(1)
+        browser.quit(); exit(1)
 
     ## CLOCK IN
     if not out_only:

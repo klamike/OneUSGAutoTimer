@@ -8,9 +8,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
-from config import MINS_TO_CLOCK, USERNAME, PASSWORD, CHROMEDRIVER_PATH, IN_PING_URL, OUT_PING_URL, FAIL_PING_URL, LOGIN_URL
+from config import MINS_TO_CLOCK, USERNAME, PASSWORD, CHROMEDRIVER_PATH, IN_PING_URL, OUT_PING_URL, FAIL_PING_URL
 SECONDS_TO_CLOCK  = MINS_TO_CLOCK * 3600
 EXCEPTIONS        = (NoSuchElementException, TimeoutException)
+
+from config import URA_LOGIN_URL, UTA_LOGIN_URL
 
 def fprint(o, **kwargs): print(o, flush=True, **kwargs)
 
@@ -30,6 +32,9 @@ def WDWait(browser, time, by, label, method=None, keys=None):
 
 def main(browser, out_only=False):
     ## LOGIN
+    if   str(sys.argv[1]).lower() in ['ura', '0']: LOGIN_URL = URA_LOGIN_URL
+    elif str(sys.argv[1]).lower() in ['uta', '1']: LOGIN_URL = UTA_LOGIN_URL
+    else: raise NotImplementedError(f"Invalid job: {sys.argv[1]}")
 
     browser.get(LOGIN_URL)
 
@@ -119,6 +124,8 @@ def main(browser, out_only=False):
 
 if __name__ == "__main__":
     try:
+        assert len(sys.argv) == 2, "Usage: python3 clock.py <job_id>"
+
         chrome_options = Options()
         chrome_options.add_argument("--headless"); chrome_options.add_argument("--log-level=3")
         browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=chrome_options)

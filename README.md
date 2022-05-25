@@ -30,8 +30,7 @@ ___
 ### CLI usage
 
 1. Run the script using `python oneusg.py`
-   - If you need to stop the script early, you'll be given a choice to clock out or not.
-      - If you choose not to, make sure to manually clock out.
+   - If you need to stop the script early, make sure to manually clock out.
    - If you want to close your SSH connection and keep the script running you can use `nohup`/`screen`/`tmux`
 
 ### Crontab usage

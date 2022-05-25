@@ -6,7 +6,7 @@ Functionally this script is almost the same as [Shaun-Regenbaum/OneUSGAutomaticC
 - This version relies on an external installation of `chromedriver` for Raspberry Pi support
 - Some of the logic is slightly modified for clarity/function.
 
-### THIS SCRIPT IS STILL BEING TESTED - USE AT YOUR OWN RISK
+### This script has been working for me for a few weeks, but still - USE AT YOUR OWN RISK
 ___
 
 ## Installation

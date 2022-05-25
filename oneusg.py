@@ -1,4 +1,4 @@
-import os, time, requests
+import sys, time, requests
 from selenium import webdriver
 from traceback import format_exc
 from selenium.webdriver.common.by import By
@@ -8,15 +8,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
-USERNAME          =       os.environ.get("GT_USERNAME")
-PASSWORD          =       os.environ.get("GT_PASSWORD")
-LOGIN_URL         =       os.environ.get("GT_LOGIN_URL")
-IN_PING_URL       =       os.environ.get("GT_IN_PING_URL")
-OUT_PING_URL      =       os.environ.get("GT_OUT_PING_URL") # see https://healthchecks.io
-FAIL_PING_URL     =       os.environ.get("GT_FAIL_PING_URL")
-CHROMEDRIVER_PATH =       os.environ.get("CHROMEDRIVER_PATH") # use `sudo apt install chromium-chromedriver`
-HOURS_TO_CLOCK    = float(os.environ.get("GT_NUMHOURS")) # set using `export GT_NUMHOURS=8`
-SECONDS_TO_CLOCK  = HOURS_TO_CLOCK * 3600
+from config import MINS_TO_CLOCK, USERNAME, PASSWORD, CHROMEDRIVER_PATH, IN_PING_URL, OUT_PING_URL, FAIL_PING_URL, LOGIN_URL
+SECONDS_TO_CLOCK  = MINS_TO_CLOCK * 3600
 EXCEPTIONS        = (NoSuchElementException, TimeoutException)
 
 def fprint(o, **kwargs): print(o, flush=True, **kwargs)
@@ -126,19 +119,15 @@ def main(browser, out_only=False):
 
 if __name__ == "__main__":
     try:
-        for i in ["GT_NUMHOURS", "GT_USERNAME", "GT_PASSWORD", "CHROMEDRIVER_PATH", "GT_LOGIN_URL", "GT_IN_PING_URL", "GT_OUT_PING_URL", "GT_FAIL_PING_URL"]:
-            if i not in os.environ: raise LookupError(f"ENV variable {i} not defined")
-
         chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--log-level=3")
+        chrome_options.add_argument("--headless"); chrome_options.add_argument("--log-level=3")
         browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, options=chrome_options)
 
         try:
             main(browser)
         except KeyboardInterrupt:
-            out_str = input("Interrupted. Clock out? [Y/n]")
-            if out_str == '' or out_str in 'yY': main(browser, out_only=True)
+            fprint("Interrupted. Make sure to clock out manually!")
+            ping(FAIL_PING_URL, text="Failure", data='KeyboardInterrupt')
         finally:
             browser.quit()
 

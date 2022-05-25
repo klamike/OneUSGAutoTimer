@@ -32,8 +32,8 @@ def WDWait(browser, time, by, label, method=None, keys=None):
 
 def main(browser, out_only=False):
     ## LOGIN
-    if   str(sys.argv[1]).lower() in ['uta', '0']: LOGIN_URL = URA_LOGIN_URL
-    elif str(sys.argv[1]).lower() in ['ura', '1']: LOGIN_URL = UTA_LOGIN_URL
+    if   str(sys.argv[1]).lower() in ['ura', '0']: LOGIN_URL = URA_LOGIN_URL
+    elif str(sys.argv[1]).lower() in ['uta', '1']: LOGIN_URL = UTA_LOGIN_URL
     else: raise NotImplementedError(f"Invalid job: {sys.argv[1]}")
 
     browser.get(LOGIN_URL)

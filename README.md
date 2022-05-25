@@ -27,6 +27,10 @@ ___
 
 ## Usage
 
+### Multiple Job Support
+
+Currently, this branch is an example of a manual implementation of multiple job support with two jobs labeled URA and UTA respectively. Note that the login URLs are exactly the same except for the last character, which corresponds to the value of the respective dropdown options in the OneUSG portal (next to the Apply button at the top of the main screen). A more user-friendly configuration is coming soon.
+
 ### CLI usage
 
 1. Run the script using `python oneusg.py`

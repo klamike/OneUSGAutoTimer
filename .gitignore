@@ -1,4 +1,6 @@
 status
+.DS_store
+config.py
 *.ipynb
 
 # Byte-compiled / optimized / DLL files

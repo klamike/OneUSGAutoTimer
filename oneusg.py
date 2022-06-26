@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 from config import MINS_TO_CLOCK, USERNAME, PASSWORD, CHROMEDRIVER_PATH, IN_PING_URL, OUT_PING_URL, FAIL_PING_URL
-SECONDS_TO_CLOCK  = MINS_TO_CLOCK * 3600
+SECONDS_TO_CLOCK  = MINS_TO_CLOCK * 60
 EXCEPTIONS        = (NoSuchElementException, TimeoutException)
 
 from config import URA_LOGIN_URL, UTA_LOGIN_URL
